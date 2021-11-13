@@ -4,18 +4,31 @@ using UnityEngine;
 
 public class ObjectsCreate : MonoBehaviour
 {
-    [SerializeField] GameObject[] _objectPrefabs = default;
-    private List<GameObject> _poolObjList;
-    private GameObject _poolObj;
+    /// <summary>生成するオブジェクトのプレハブ</summary>
+    [SerializeField] GameObject _objectPrefab = default;
+    /// <summary>同時に生成可能な最大数</summary>
+    [SerializeField] int _maxCount = 10;
+    /// <summary>生成する間隔</summary>
+    [SerializeField] float _createInterval = 3f;
+    [SerializeField] List<Transform> _lanes = new List<Transform>();
+
+    List<GameObject> _poolObjList;
+     GameObject _poolObj;
+    float _timer = 0f;
+
     void Start()
     {
-        
+        CreatePool(_objectPrefab, _maxCount);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (_timer > _createInterval)
+        {
+            Create();
+            _timer = 0;
+        }
+        _timer += Time.deltaTime;
     }
     // オブジェクトプールを作成
     public void CreatePool(GameObject obj, int maxCount)
@@ -40,7 +53,6 @@ public class ObjectsCreate : MonoBehaviour
                 return obj;
             }
         }
-
         // 全て使用中だったら新しく作って返す
         var newObj = CreateNewObject();
         newObj.SetActive(true);
@@ -49,11 +61,18 @@ public class ObjectsCreate : MonoBehaviour
         return newObj;
     }
 
-    private GameObject CreateNewObject()
+    GameObject CreateNewObject()
     {
         var newObj = Instantiate(_poolObj);
         newObj.name = _poolObj.name + (_poolObjList.Count + 1);
 
         return newObj;
+    }
+
+    void Create()
+    {
+        int lane = Random.Range(0, 3);// 0～2のなかの整数乱数
+        GameObject go = GetObject();
+        go.transform.position = _lanes[lane].position;
     }
 }
