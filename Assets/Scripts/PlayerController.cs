@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 2f;   // Playerオブジェクトの移動速度
     Vector3 mousePos;     // 最初にタッチ(左クリック)した地点の情報を入れる
+    bool _firstTouch = false;
 
     void Start()
     {
@@ -46,10 +47,24 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            //if (Input.touches)
-            //{
+            if (Input.touchCount < 1) return;
 
-            //}
+            foreach (var t in Input.touches)
+            {
+                switch (t.phase)
+                {
+                    case TouchPhase.Began:
+                        break;
+                    case TouchPhase.Moved:
+                        break;
+                    case TouchPhase.Stationary:
+                        break;
+                    case TouchPhase.Ended:
+                        break;
+                    case TouchPhase.Canceled:
+                        break;
+                }
+            }
         }
     }
 }

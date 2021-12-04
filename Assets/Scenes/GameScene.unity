@@ -577,7 +577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectPrefab: {fileID: 387256202786410967, guid: d34d65c9d24175e4abf4320a25885e04, type: 3}
   _maxCount: 10
-  _createInterval: 3
+  _createInterval: 1
   _lanes:
   - {fileID: 1925986734}
   - {fileID: 2124499709}
