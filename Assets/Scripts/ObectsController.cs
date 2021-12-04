@@ -11,6 +11,7 @@ public class ObectsController : MonoBehaviour
     void Update()
     {
         Move();
+
     }
 
     void Move()

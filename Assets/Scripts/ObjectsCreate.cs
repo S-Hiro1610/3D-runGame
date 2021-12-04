@@ -64,6 +64,7 @@ public class ObjectsCreate : MonoBehaviour
     GameObject CreateNewObject()
     {
         var newObj = Instantiate(_poolObj);
+        newObj.transform.parent = gameObject.transform;
         newObj.name = _poolObj.name + (_poolObjList.Count + 1);
 
         return newObj;
