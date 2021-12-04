@@ -6,11 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 2f;   // Playerオブジェクトの移動速度
     Vector3 mousePos;     // 最初にタッチ(左クリック)した地点の情報を入れる
-    bool _firstTouch = false;
+    bool isInGame = true;
 
     void Start()
     {
-        
+        EventManager.OnGameStart += GameStart;
+        EventManager.OnGameEnd += GameEnd;
     }
 
     void Update()
@@ -66,5 +67,14 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    void GameEnd()
+    {
+        isInGame = false;
+    }
+    void GameStart()
+    {
+        isInGame = true;
     }
 }

@@ -11,7 +11,6 @@ public class ObectsController : MonoBehaviour
     void Update()
     {
         Move();
-
     }
 
     void Move()
@@ -24,6 +23,14 @@ public class ObectsController : MonoBehaviour
         else
         {
             transform.Translate(0, 0, -_moveSpeed * Time.deltaTime);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            Debug.Log("Hit");
+            EventManager.GameEnd();
         }
     }
 }
