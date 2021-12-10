@@ -13,32 +13,54 @@ public class StageScroller : MonoBehaviour
     /// <summary>クローンしたObjを入れる変数</summary>
     GameObject _clone;
     /// <summary>Objのサイズを入れる変数</summary>
-    float m_objSizeZ;
+    float _objSizeZ;
     /// <summary>最初にObjがある場所</summary>
-    Vector3 m_startPos;
+    Vector3 _startPos;
+    bool _scrollFlag = false;
+
     void Start()
     {
-        m_objSizeZ = _stage.GetComponent<Renderer>().bounds.size.z;
-        m_startPos = _stage.transform.position;
-        _clone = Instantiate(_stage);
-        _clone.transform.Translate(new Vector3(0, 0, m_objSizeZ));
+        Initialize();
+        EventManager.OnGameStart += ScrollStart;
+        EventManager.OnStop += ScrollStop;
     }
     void Update()
     {
-        MoveScroll();
+        if (_scrollFlag)
+        {
+            MoveScroll();
+        }
+        
+    }
+    void Initialize()
+    {
+        _objSizeZ = _stage.GetComponent<Renderer>().bounds.size.z;
+        _startPos = _stage.transform.position;
+        _clone = Instantiate(_stage);
+        _clone.transform.Translate(new Vector3(0, 0, _objSizeZ));
     }
     void MoveScroll()
     {
         _stage.transform.Translate(0, 0, -_scrollSpeed * Time.deltaTime);
         _clone.transform.Translate(0, 0, -_scrollSpeed * Time.deltaTime);
-        if (_stage.transform.position.z < m_startPos.z - m_objSizeZ)
+        if (_stage.transform.position.z < _startPos.z - _objSizeZ)
         {
-            _stage.transform.Translate(0, 0, m_objSizeZ * 2);
+            _stage.transform.Translate(0, 0, _objSizeZ * 2);
         }
         
-        if (_clone.transform.position.z < m_startPos.z - m_objSizeZ)
+        if (_clone.transform.position.z < _startPos.z - _objSizeZ)
         {
-            _clone.transform.Translate(0, 0, m_objSizeZ * 2);
+            _clone.transform.Translate(0, 0, _objSizeZ * 2);
         }
+    }
+
+    void ScrollStart()
+    {
+        _scrollFlag = true;
+    }
+
+    void ScrollStop()
+    {
+        _scrollFlag = false;
     }
 }

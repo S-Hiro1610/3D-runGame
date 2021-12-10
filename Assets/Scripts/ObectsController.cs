@@ -7,10 +7,19 @@ public class ObectsController : MonoBehaviour
     [SerializeField] float _moveSpeed = 5f;
     /// <summary>オブジェクトを破棄する位置</summary>
     [SerializeField] float _endPos = -3f;
+    bool _moveFlag = false;
 
+    void Start()
+    {
+        EventManager.OnGameStart += MoveStart;
+        EventManager.OnStop += MoveStop;
+    }
     void Update()
     {
-        Move();
+        if (_moveFlag)
+        {
+            Move();
+        }
     }
 
     void Move()
@@ -32,5 +41,13 @@ public class ObectsController : MonoBehaviour
             Debug.Log("Hit");
             EventManager.GameEnd();
         }
+    }
+    void MoveStart()
+    {
+        _moveFlag = true;
+    }
+    void MoveStop()
+    {
+        _moveFlag = false;
     }
 }

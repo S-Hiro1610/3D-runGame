@@ -15,6 +15,7 @@ public class ObjectsCreate : MonoBehaviour
     List<GameObject> _poolObjList;
      GameObject _poolObj;
     float _timer = 0f;
+    bool _createFlag = false;
 
     void Start()
     {
@@ -23,12 +24,15 @@ public class ObjectsCreate : MonoBehaviour
 
     void Update()
     {
-        if (_timer > _createInterval)
+        if (_createFlag)
         {
-            Create();
-            _timer = 0;
+            if (_timer > _createInterval)
+            {
+                Create();
+                _timer = 0;
+            }
+            _timer += Time.deltaTime;
         }
-        _timer += Time.deltaTime;
     }
     // オブジェクトプールを作成
     public void CreatePool(GameObject obj, int maxCount)
@@ -75,5 +79,14 @@ public class ObjectsCreate : MonoBehaviour
         int lane = Random.Range(0, 3);// 0～2のなかの整数乱数
         GameObject go = GetObject();
         go.transform.position = _lanes[lane].position;
+    }
+
+    void CreateStart()
+    {
+        _createFlag = true;
+    }
+    void CreateStop()
+    {
+        _createFlag = false;
     }
 }
